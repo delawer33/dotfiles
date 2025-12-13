@@ -3,8 +3,8 @@
 # weather info from wttr. https://github.com/chubin/wttr.in
 # Remember to add city 
 
-city=Sochi
-cachedir=~/.cache/rbn
+city=
+cachedir="~/.cache/rbn"
 cachefile=${0##*/}-$1
 
 if [ ! -d $cachedir ]; then
@@ -21,7 +21,7 @@ SAVEIFS=$IFS
 IFS=$'\n'
 
 cacheage=$(($(date +%s) - $(stat -c '%Y' "$cachedir/$cachefile")))
-if [ $cacheage -gt 1 ] || [ ! -s $cachedir/$cachefile ]; then
+if [ $cacheage -gt 1740 ] || [ ! -s $cachedir/$cachefile ]; then
     data=($(curl -s https://en.wttr.in/"$city"$1\?0qnT 2>&1))
     echo ${data[0]} | cut -f1 -d, > $cachedir/$cachefile
     echo ${data[1]} | sed -E 's/^.{15}//' >> $cachedir/$cachefile
@@ -54,7 +54,7 @@ case $(echo ${weather[1]##*,} | tr '[:upper:]' '[:lower:]') in
 "fog" | "freezing fog")
     condition=""
     ;;
-"patchy rain nearby" | "patchy rain possible" | "patchy light drizzle" | "light drizzle" | "patchy light rain" | "light rain" | "light rain shower" | "mist" | "rain")
+"patchy rain possible" | "patchy light drizzle" | "light drizzle" | "patchy light rain" | "light rain" | "light rain shower" | "mist" | "rain")
     condition="󰼳"
     ;;
 "moderate rain at times" | "moderate rain" | "heavy rain at times" | "heavy rain" | "moderate or heavy rain shower" | "torrential rain shower" | "rain shower")
@@ -66,7 +66,7 @@ case $(echo ${weather[1]##*,} | tr '[:upper:]' '[:lower:]') in
 "blowing snow" | "moderate or heavy sleet" | "patchy light snow" | "light snow" | "light snow showers")
     condition="󰙿"
     ;;
-"snow shower" | "light snow shower" | "blizzard" | "patchy moderate snow" | "moderate snow" | "patchy heavy snow" | "heavy snow" | "moderate or heavy snow with thunder" | "moderate or heavy snow showers")
+"blizzard" | "patchy moderate snow" | "moderate snow" | "patchy heavy snow" | "heavy snow" | "moderate or heavy snow with thunder" | "moderate or heavy snow showers")
     condition=""
     ;;
 "thundery outbreaks possible" | "patchy light rain with thunder" | "moderate or heavy rain with thunder" | "patchy light snow with thunder")
@@ -84,4 +84,4 @@ echo -e "{\"text\":\""$temperature $condition"\", \"alt\":\""${weather[0]}"\", \
 
 cached_weather=" $temperature  \n$condition ${weather[1]}"
 
-echo -e $cached_weather >  ~/.cache/.weather_cache
+echo -e $cached_weather >  "~/.cache/.weather_cache"

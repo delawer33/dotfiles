@@ -7,6 +7,7 @@
   "$HOME/.config/waybar/ModulesWorkspaces",
   "$HOME/.config/waybar/ModulesCustom",
   "$HOME/.config/waybar/ModulesGroups",
+  "$HOME/.config/waybar/UserModules",
   ],
 "layer": "top",
 //"mode": "dock",
@@ -16,9 +17,10 @@
 "spacing": 3,
 "fixed-center": true,
 "ipc": true,
-"margin-top": 2,
-"margin-left": 3,
-"margin-right": 3,
+"margin-top": 1,
+"margin-bottom": 1,
+"margin-left": 2,
+"margin-right": 2,
 
 "modules-left": [
 	"custom/separator#blank",
@@ -30,7 +32,8 @@
 	],
 
 "modules-center": [
-	"group/app_drawer",
+    "custom/memento_mori",
+    "group/app_drawer",
 	"custom/separator#blank",
 	"group/notify",
 	"custom/separator#dot-line",
@@ -39,7 +42,7 @@
 	"custom/separator#dot-line",
 	"custom/weather",
 	"custom/separator#dot-line",
-	"idle_inhibitor",	
+	"idle_inhibitor",
 	],
 
 "modules-right": [

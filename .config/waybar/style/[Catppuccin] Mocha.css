@@ -17,7 +17,6 @@ window#waybar {
   	transition-duration: 0.5s;
   	background: transparent;
   	border-radius: 10px;
-	margin-top: 40px;
 }
 
 window#waybar.hidden {
@@ -129,6 +128,8 @@ window#waybar.empty #window {
 #custom-playerctl,
 #custom-power_vertical,
 #custom-power,
+#custom-quit,
+#custom-reboot,
 #custom-settings,
 #custom-spotify,
 #custom-swaync,

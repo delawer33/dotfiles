@@ -32,8 +32,8 @@ window#waybar.empty #window {
 #taskbar,
 #workspaces {
   background: #0F1419;
-  margin: 1px;
-  padding: 0px 0px;
+  margin: 5px;
+  padding: 0px 1px;
   border-radius: 15px;
   border: 0px;
   font-style: normal;
@@ -42,8 +42,8 @@ window#waybar.empty #window {
 
 #taskbar button,
 #workspaces button {
-  padding: 0px 4px;
-  margin: 0px 0px;
+  padding: 0px 5px;
+  margin: 4px 3px;
   border-radius: 15px;
   border: 0px;
   color: #0F1419;
@@ -54,8 +54,8 @@ window#waybar.empty #window {
 
 #taskbar button.active,
 #workspaces button.active {
-  padding: 0px 0px;
-  margin: 0px 0px;
+  padding: 0px 5px;
+  margin: 4px 3px;
   border-radius: 15px;
   border: 0px;
   color: #0F1419;
