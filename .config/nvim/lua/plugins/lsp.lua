@@ -137,8 +137,8 @@ return {
           pylsp = {
             plugins = {
               pyflakes = { enabled = false },
-              pycodestyle = { enabled = false },
-              autopep8 = { enabled = false },
+              pycodestyle = { enabled = true },
+              autopep8 = { enabled = true },
               yapf = { enabled = false },
               mccabe = { enabled = false },
               pylsp_mypy = { enabled = false },
@@ -153,6 +153,7 @@ return {
       tailwindcss = {},
       dockerls = {},
       sqlls = {},
+      -- terraformls = {},
       jsonls = {},
       yamlls = {},
       lua_ls = {
@@ -197,4 +198,3 @@ return {
     end
   end,
 }
-

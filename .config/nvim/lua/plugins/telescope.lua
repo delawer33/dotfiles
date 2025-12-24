@@ -112,4 +112,3 @@ return {
     end, { desc = '[S]earch [/] in Open Files' })
   end,
 }
-
