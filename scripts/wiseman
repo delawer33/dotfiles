@@ -1,0 +1,73 @@
+#!/bin/bash
+
+FILE="$HOME/.wiseman_storage.txt"
+SEP="==="
+
+touch "$FILE" 2>/dev/null
+
+random_phrase() {
+    if [ ! -s "$FILE" ]; then
+        echo "No phrases yet. Add first: 'wiseman add \"your phrase\"'"
+        exit 1
+    fi
+    
+    count=$(awk -v RS="$SEP" 'END{print NR}' "$FILE")
+    num=$(( RANDOM % count + 1 ))
+    awk -v n="$num" -v RS="$SEP" 'NR==n {print; exit}' "$FILE"
+}
+
+add_phrase() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: wiseman add \"phrase\""
+        exit 1
+    fi
+    
+    phrase="$*"
+    
+    if [ -s "$FILE" ]; then
+        echo -e "\n$SEP" >> "$FILE"
+    fi
+    
+    echo "$phrase" >> "$FILE"
+    echo "Added: \"$phrase\""
+}
+
+help_info() {
+    echo "Wiseman - phrase storage utility"
+    echo ""
+    echo "Usage:"
+    echo "  wiseman                 - show random phrase"
+    echo "  wiseman add \"phrase\"    - add new phrase"
+    echo "  wiseman help            - show help"
+    echo "  wiseman count           - count phrases"
+}
+
+count_phrases() {
+    if [ ! -s "$FILE" ]; then
+        echo "0 phrases"
+    else
+        c=$(awk -v RS="$SEP" 'END{print NR}' "$FILE")
+        echo "$c phrases"
+    fi
+}
+
+case "$1" in
+    "add")
+        shift
+        add_phrase "$@"
+        ;;
+    "help"|"--help"|"-h")
+        help_info
+        ;;
+    "count")
+        count_phrases
+        ;;
+    "")
+        random_phrase
+        ;;
+    *)
+        echo "Unknown command: $1"
+        echo "Use 'wiseman help' for help"
+        exit 1
+        ;;
+esac

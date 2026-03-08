@@ -31,12 +31,12 @@
 --   lazy = false, -- Загружается сразу
 --   priority = 1000,
 --   opts = {
---     style = 'storm', -- Или "night", "moon", "day"
+--     style = 'storm',
 --     transparent = false,
 --     terminal_colors = true,
 --   },
 -- }
-
+--
 -- return {
 --   'rose-pine/neovim',
 --   name = 'rose-pine',
@@ -59,37 +59,48 @@
 --     vim.cmd 'colorscheme rose-pine'
 --   end,
 -- }
+-- return {
+--   'ellisonleao/gruvbox.nvim',
+--   name = 'gruvbox',
+--   lazy = false,
+--   priority = 1000,
+--   opts = {
+--     terminal_colors = false,
+--     undercurl = true,
+--     underline = true,
+--     bold = false,
+--     italic = {
+--       strings = true,
+--       emphasis = true,
+--       comments = true,
+--       operators = false,
+--       folds = true,
+--     },
+--     strikethrough = true,
+--     invert_selection = false,
+--     invert_signs = false,
+--     invert_tabline = false,
+--     invert_intend_guides = false,
+--     inverse = true,
+--     contrast = 'soft',
+--     palette_overrides = {},
+--     overrides = {},
+--     dim_inactive = false,
+--     transparent_mode = false,
+--   },
+--   config = function(_, opts)
+--     require('gruvbox').setup(opts)
+--     vim.cmd 'colorscheme gruvbox'
+--   end,
+-- }
 return {
-  'ellisonleao/gruvbox.nvim',
-  name = 'gruvbox',
-  lazy = false,
-  priority = 1000,
-  opts = {
-    terminal_colors = false,
-    undercurl = true,
-    underline = true,
-    bold = false,
-    italic = {
-      strings = true,
-      emphasis = true,
-      comments = true,
-      operators = false,
-      folds = true,
-    },
-    strikethrough = true,
-    invert_selection = false,
-    invert_signs = false,
-    invert_tabline = false,
-    invert_intend_guides = false,
-    inverse = true,
-    contrast = 'soft',
-    palette_overrides = {},
-    overrides = {},
-    dim_inactive = false,
-    transparent_mode = false,
-  },
-  config = function(_, opts)
-    require('gruvbox').setup(opts)
-    vim.cmd 'colorscheme gruvbox'
+  'projekt0n/github-nvim-theme',
+  name = 'github-theme',
+  lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  priority = 1000, -- make sure to load this before all the other start plugins
+  config = function()
+    require('github-theme').setup {
+      -- ...
+    }
   end,
 }

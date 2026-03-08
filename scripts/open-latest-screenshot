@@ -1,0 +1,88 @@
+#!/bin/bash
+# Скрипт open-latest-screenshot - открывает последний скриншот в GIMP
+
+SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
+
+# Расширения файлов для поиска
+IMAGE_EXTENSIONS=("png" "jpg" "jpeg" "bmp" "tiff" "webp")
+
+# Цвета для вывода
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Функция для проверки зависимостей
+check_dependencies() {
+    if ! command -v gimp &> /dev/null; then
+        echo -e "${RED}Ошибка: GIMP не установлен${NC}"
+        echo "Установите GIMP: sudo apt install gimp (Ubuntu/Debian)"
+        exit 1
+    fi
+    
+    if ! command -v find &> /dev/null; then
+        echo -e "${RED}Ошибка: команда find не найдена${NC}"
+        exit 1
+    fi
+}
+
+# Функция для поиска последнего скриншота
+find_latest_screenshot() {
+    # Формируем условия поиска для всех расширений
+    local find_cmd="find \"$SCREENSHOTS_DIR\" -type f"
+    
+    for ext in "${IMAGE_EXTENSIONS[@]}"; do
+        find_cmd+=" -iname \"*.$ext\" -o"
+    done
+    
+    # Убираем последний " -o"
+    find_cmd="${find_cmd% -o}"
+    
+    # Выполняем поиск и сортируем по времени изменения (новые сначала)
+    eval "$find_cmd" | xargs ls -t 2>/dev/null | head -n 1
+}
+
+# Главная функция
+main() {
+    echo -e "${GREEN}=== Открытие последнего скриншота ===${NC}"
+    
+    # Проверяем зависимости
+    check_dependencies
+    
+    # Проверяем существование папки
+    if [ ! -d "$SCREENSHOTS_DIR" ]; then
+        echo -e "${YELLOW}Создаю папку для скриншотов: $SCREENSHOTS_DIR${NC}"
+        mkdir -p "$SCREENSHOTS_DIR"
+    fi
+    
+    # Ищем последний скриншот
+    echo "Ищу скриншоты в: $SCREENSHOTS_DIR"
+    LATEST_SCREENSHOT=$(find_latest_screenshot)
+    
+    if [ -z "$LATEST_SCREENSHOT" ]; then
+        echo -e "${RED}Скриншоты не найдены${NC}"
+        echo "Доступные форматы: ${IMAGE_EXTENSIONS[*]}"
+        exit 1
+    fi
+    
+    echo -e "${GREEN}Найден скриншот:${NC} $LATEST_SCREENSHOT"
+    
+    # Проверяем размер файла (опционально)
+    FILE_SIZE=$(du -h "$LATEST_SCREENSHOT" | cut -f1)
+    echo "Размер файла: $FILE_SIZE"
+    
+    # Открываем в GIMP
+    echo "Запускаю GIMP..."
+    gimp "$LATEST_SCREENSHOT" > /dev/null 2>&1 &
+    
+    # Проверяем успешность запуска
+    sleep 1
+    if ps aux | grep -v grep | grep -q "gimp.*$(basename "$LATEST_SCREENSHOT")"; then
+        echo -e "${GREEN}✓ GIMP запущен с файлом: $(basename "$LATEST_SCREENSHOT")${NC}"
+    else
+        echo -e "${YELLOW}⚠ GIMP запущен, но возможно возникли ошибки${NC}"
+    fi
+}
+
+# Запускаем главную функцию
+main "$@"
