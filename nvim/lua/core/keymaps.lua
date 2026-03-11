@@ -81,8 +81,10 @@ vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- Swap lines up and down
-vim.keymap.set({ 'n', 'i' }, '<M-Down>', ':m .+1<CR>==zz', { desc = 'Move line down' })
-vim.keymap.set({ 'n', 'i' }, '<M-Up>', ':m .-2<CR>==zz', { desc = 'Move line up' })
+vim.keymap.set('n', '<M-j>', ':m .+1<CR>==zz', { desc = 'Move line down' })
+vim.keymap.set('n', '<M-k>', ':m .-2<CR>==zz', { desc = 'Move line up' })
+vim.keymap.set('i', '<M-j>', '<Esc>:m .+1<CR>==zzi', { desc = 'Move line down' })
+vim.keymap.set('i', '<M-k>', '<Esc>:m .-2<CR>==zzi', { desc = 'Move line up' })
 
 -- Delete without saving to buffer
 vim.keymap.set({ 'n', 'v' }, '<Del>', '"_x', { desc = 'Delete withous saving' })
@@ -91,5 +93,7 @@ vim.keymap.set({ 'n', 'v' }, '<Del>', '"_x', { desc = 'Delete withous saving' })
 vim.keymap.set('i', '<C-BS>', '<C-w>', { desc = 'Delete word to left' })
 
 -- Copy line up and down
-vim.keymap.set('i', '<C-A-Down>', '<Esc>yypgi', { desc = 'Copy line down' })
-vim.keymap.set('i', '<C-A-Up>', '<Esc>yyPgi', { desc = 'Copy line up' })
+vim.keymap.set('n', '<C-A-j>', 'yypg<Esc>', { desc = 'Copy line down' })
+vim.keymap.set('n', '<C-A-k>', 'yyPg<Esc>', { desc = 'Copy line up' })
+vim.keymap.set('i', '<C-A-j>', '<Esc>yypgi', { desc = 'Copy line down' })
+vim.keymap.set('i', '<C-A-k>', '<Esc>yyPgi', { desc = 'Copy line up' })
