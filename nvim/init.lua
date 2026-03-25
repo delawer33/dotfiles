@@ -37,7 +37,7 @@ require('lazy').setup {
 -- vim.cmd [[colorscheme rose-pine]]
 -- vim.cmd [[colorscheme carbonized-dark]]
 -- vim.cmd [[colorscheme tokyonight-moon]]
-vim.cmd [[colorscheme github_dark]]
+-- vim.cmd [[colorscheme github_dark]]
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -105,6 +105,45 @@ return {
           })
         end
 
+        -- Python: use Ruff for organize-imports + format on save.
+        -- Other filetypes: keep formatting handled by none-ls (see lua/plugins/none-ls.lua).
+        if client and client.name == 'ruff' then
+          local format_augroup = vim.api.nvim_create_augroup('RuffFormatOnSave', { clear = false })
+          vim.api.nvim_clear_autocmds { group = format_augroup, buffer = event.buf }
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = format_augroup,
+            buffer = event.buf,
+            callback = function()
+              if vim.bo[event.buf].filetype ~= 'python' then
+                return
+              end
+
+              -- 1) Organize imports (Ruff).
+              local done = false
+              client:exec_cmd({
+                command = 'ruff.applyOrganizeImports',
+                arguments = {
+                  { uri = vim.uri_from_bufnr(event.buf), version = vim.lsp.util.buf_versions[event.buf] or 0 },
+                },
+              }, { bufnr = event.buf }, function()
+                done = true
+              end)
+              vim.wait(2000, function()
+                return done
+              end)
+
+              -- 2) Format (Ruff).
+              vim.lsp.buf.format {
+                bufnr = event.buf,
+                async = false,
+                filter = function(c)
+                  return c.name == 'ruff'
+                end,
+              }
+            end,
+          })
+        end
+
         -- The following code creates a keymap to toggle inlay hints in your
         -- code, if the language server you are using supports them
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
@@ -131,7 +170,19 @@ return {
     -- - settings (table): Override the default settings passed when initializing the server.
     local servers = {
       ts_ls = {},
-      ruff = {},
+      ruff = {
+        init_options = {
+          settings = {
+            lineLength = 88,
+            organizeImports = true,
+            fixAll = true,
+            configurationPreference = 'filesystemFirst',
+            lint = {
+              extendSelect = { 'I' }, -- isort: sort and format imports
+            },
+          },
+        },
+      },
       gopls = {},
       -- pylsp = {
       --   settings = {
