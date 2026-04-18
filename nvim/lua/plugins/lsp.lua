@@ -178,7 +178,8 @@ return {
             fixAll = true,
             configurationPreference = 'filesystemFirst',
             lint = {
-              extendSelect = { 'I' }, -- isort: sort and format imports
+              enable = false,
+              -- extendSelect = { 'I' }, -- isort: sort and format imports
             },
           },
         },
@@ -216,6 +217,8 @@ return {
       pyright = {
         settings = {
           python = {
+            venvPath = '.',
+            venv = '.venv',
             analysis = {
               typeCheckingMode = 'basic', -- off | basic | strict
               autoSearchPaths = true,
